@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>刷量小工具</title>
+
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="baidu-site-verification" content="v3r4JDDzPy"/>
+
+    <!-- vue.js -->
+    <script src="//cdn.bootcss.com/vue/2.2.1/vue.js"></script>
+    <!-- element-ui -->
+    <link href="//cdn.bootcss.com/element-ui/1.2.5/theme-default/index.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/element-ui/1.2.5/index.js"></script>
+    <style>
+        body{padding: 60px 15px;}
+        .app{ max-width: 500px; }
+
+        .el-button{width: 100px;}
+        .el-input__inner{font-size: 14px;}
+        .el-form-item{margin-bottom: 30px;}
+        .el-form-item__label{vertical-align: middle;}
+    </style>
+</head>
+<body>
+<div id="app" class="app">
+    <el-form :model="form" :rules="rules" ref="ruleForm" label-position="right" label-width="100px">
+        <el-form-item label="网址" prop="websit">
+            <el-input size="large" v-model="form.websit" placeholder="请输入网址"></el-input>
+        </el-form-item>
+        <el-form-item label="增加次数" prop="num" required>
+            <el-input type="number" size="large"  v-model.number="form.num" placeholder="请输入0-1000的任意数字"></el-input>
+        </el-form-item>
+        <el-form-item v-show="isOver" >
+            <el-button @click.native="checkForm" type="primary">开始</el-button>
+        </el-form-item>
+        <el-form-item v-show="!isOver" >
+            <el-button @click.native="stop">停止</el-button>
+        </el-form-item>
+    </el-form>
+</div>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data(){
+            return {
+                form:{
+                    websit:'http://www.jianshu.com/p/67b402e7625e',
+                    num:100
+                },
+                rules:{
+                    websit:[
+                        {required: true, message: '请输入网址', trigger:'blur'},
+                        {pattern: /^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*$/i,message: '请输入正确的网址',trigger: 'blur'}
+                    ],
+                    num:[
+                        {validator: checkNum }
+                    ]
+                },
+                /* 是否结束 */
+                interval: '',
+                isOver: true
+            }
+        },
+        watch:{
+            interval(val){
+                console.log(val);
+            },
+            form:{
+                handler(form){
+                    console.log(form.num);
+                },
+                deep: true
+            }
+        },
+        methods: {
+            /* 表单验证 */
+            checkForm(){
+                this.$refs.ruleForm.validate(function (valid) {
+                    if(!valid){
+                        vm.$message('请正确填写表单');
+                    }else {
+                        vm.reLoad();
+                    }
+                })
+            },
+            /* 刷新页面 */
+            reLoad(){
+                this.isOver = false;
+                clearInterval(this.interval);
+                var url = this.form.websit;
+                this.interval = setInterval( function () {
+                    if ( --vm.form.num ) {
+                        window.open( url, 'width=100,height=100' );
+                    }else{
+                        vm.stop()
+                    }
+                }, 2000*(Math.random()*2+1));
+            },
+            /* 停止刷新页面 */
+            stop(){
+                this.isOver = true;
+                clearInterval(this.interval);
+                this.$message('已停止刷新');
+            }
+        }
+    })
+
+    /* 验证数字 */
+    function checkNum(rule, value, callback) {
+        switch (value){
+            case '':
+                return callback(new Error('次数不能为空'));
+                break
+            case !Number.isInteger(value):
+                return callback(new Error('请输入次数'));
+                break
+            case value<0 || value>1000:
+                return callback(new Error('请输入0-1000的任意次数'));
+                break
+            default:
+                return callback()
+        }
+    }
+</script>
+</body>
+</html>
