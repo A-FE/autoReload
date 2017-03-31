@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>我的</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta http-equiv="Expires" content="0"/>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta content="telephone=no" name="format-detection"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="baidu-site-verification" content="v3r4JDDzPy"/>
+    <!-- vue.js -->
+    <script src="//cdn.bootcss.com/vue/2.2.1/vue.js"></script>
+    <!-- vue-resource -->
+    <script src="//cdn.bootcss.com/vue-resource/1.2.1/vue-resource.js"></script>
+    <!-- element-ui -->
+    <link href="//cdn.bootcss.com/element-ui/1.2.5/theme-default/index.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/element-ui/1.2.5/index.js"></script>
+    <style>
+        body{padding: 30px 20px;}
+        .red{
+            color: red;
+        }
+        .green{color: green;}
+    </style>
+</head>
+<body>
+<div id="app">
+    <!-- 输入框 -->
+
+    <!-- 日期 -->
+    <div style="text-align: center;margin-bottom: 20px;"><span :class="Number() > 0 ? 'red' : 'green'">{{rise}}</span></div>
+</div>
+<script type="text/javascript" src="http://hq.sinajs.cn/list=sz000060" charset="gb2312"></script>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data(){
+            return {
+                // 股票名
+                name: '',
+                code: '000060',
+                // 今日涨跌幅
+                rise: 0,
+                // 昨日收盘价
+                preEPrice: 0,
+                // 今日收盘价
+                curEPrice: 0,
+                // 今日开盘价
+                curSPrice:0,
+                // 今日最高价
+                curTPrice: 0,
+                // 今日最低价
+                curBPrice: 0,
+                // 竞价买一~买五
+                buy1Price:0,
+                buy2Price:0,
+                buy3Price:0,
+                buy4Price:0,
+                buy5Price:0,
+                // 竞价买一~买五的手数
+                buy1Num:0,
+                buy2Num:0,
+                buy3Num:0,
+                buy4Num:0,
+                buy5Num:0,
+                // 卖一到卖五
+                sold1Price:0,
+                sold2Price:0,
+                sold3Price:0,
+                sold4Price:0,
+                sold5Price:0,
+                // 竞价卖一~卖五的手数
+                sold1Num:0,
+                sold2Num:0,
+                sold3Num:0,
+                sold4Num:0,
+                sold5Num:0,
+                data: '',
+                time: ''
+            }
+        },
+        watch: {},
+        methods: {},
+        created(){
+            console.log(hq_str_sz000060);
+            var arr = hq_str_sz000060.split(',');
+            this.name = arr[0];
+            this.curSPrice = Number(arr[1]);
+            this.preEPrice = Number(arr[2]);
+            this.curEPrice = Number(arr[3]);
+            this.curTPrice = Number(arr[4]);
+            this.curBPrice = Number(arr[5]);
+            this.rise = ((this.curEPrice-this.preEPrice)/this.preEPrice*100).toFixed(2)+'%';
+        }
+    })
+
+   
+</script>
+</body>
+</html>
