@@ -11,17 +11,20 @@
 
     <!-- vue.js -->
     <script src="//cdn.bootcss.com/vue/2.2.1/vue.js"></script>
+    <!-- vue-resource -->
+    <script src="//cdn.bootcss.com/vue-resource/1.2.1/vue-resource.js"></script>
     <!-- element-ui -->
     <link href="//cdn.bootcss.com/element-ui/1.2.5/theme-default/index.css" rel="stylesheet">
     <script src="//cdn.bootcss.com/element-ui/1.2.5/index.js"></script>
     <style>
-        body{padding: 60px 15px;}
+        body{padding: 60px 15px;min-width: 420px;}
         .app{ max-width: 500px; }
 
         .el-button{width: 100px;}
         .el-input__inner{font-size: 14px;}
         .el-form-item{margin-bottom: 30px;}
         .el-form-item__label{vertical-align: middle;}
+
     </style>
 </head>
 <body>
@@ -61,7 +64,8 @@
                 },
                 /* 是否结束 */
                 interval: '',
-                isOver: true
+                isOver: true,
+                html:''
             }
         },
         watch:{
@@ -105,6 +109,10 @@
                 clearInterval(this.interval);
                 this.$message('已停止刷新');
             }
+        },
+        created (){
+            var _this = this;
+
         }
     })
 
@@ -124,6 +132,8 @@
                 return callback()
         }
     }
+
 </script>
+
 </body>
 </html>
